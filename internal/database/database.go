@@ -22,6 +22,7 @@ type Service interface {
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
+	CreateTable(query string)
 }
 
 type service struct {
@@ -49,7 +50,15 @@ func New() Service {
 	dbInstance = &service{
 		db: db,
 	}
+	dbInstance.init()
 	return dbInstance
+}
+
+func (s *service) init() {
+	const createUserTable = "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL, salt TEXT NO NULL)"
+	s.CreateTable(createUserTable)
+	const createJwtTable = "CREATE TABLE IF NOT EXISTS jwt (id INTEGER PRIMARY KEY AUTOINCREMENT, jwt TEXT NOT NULL UNIQUE)"
+	s.CreateTable(createJwtTable)
 }
 
 // Health checks the health of the database connection by pinging the database.
@@ -65,7 +74,7 @@ func (s *service) Health() map[string]string {
 	if err != nil {
 		stats["status"] = "down"
 		stats["error"] = fmt.Sprintf("db down: %v", err)
-		log.Fatalf(fmt.Sprintf("db down: %v", err)) // Log the error and terminate the program
+		log.Fatalf("%s", fmt.Sprintf("db down: %v", err)) // Log the error and terminate the program
 		return stats
 	}
 
@@ -110,4 +119,14 @@ func (s *service) Health() map[string]string {
 func (s *service) Close() error {
 	log.Printf("Disconnected from database: %s", dburl)
 	return s.db.Close()
+}
+
+func (s *service) CreateTable(query string) {
+	statement, err := s.db.Prepare(query)
+	if err != nil {
+		log.Println("Error in creating table")
+	} else {
+		log.Println("Successfully created table books!")
+	}
+	statement.Exec()
 }

@@ -22,7 +22,7 @@ type Service interface {
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
-	CreateTable(query string)
+	CreateTable(query string, name string)
 }
 
 type service struct {
@@ -56,9 +56,9 @@ func New() Service {
 
 func (s *service) init() {
 	const createUserTable = "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL, salt TEXT NO NULL)"
-	s.CreateTable(createUserTable)
-	const createJwtTable = "CREATE TABLE IF NOT EXISTS jwt (id INTEGER PRIMARY KEY AUTOINCREMENT, jwt TEXT NOT NULL UNIQUE)"
-	s.CreateTable(createJwtTable)
+	s.CreateTable(createUserTable, "user")
+	const createJwtTable = "CREATE TABLE IF NOT EXISTS jwt (id INTEGER PRIMARY KEY AUTOINCREMENT, jwt TEXT NOT NULL UNIQUE, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES user(id))"
+	s.CreateTable(createJwtTable, "jwt")
 }
 
 // Health checks the health of the database connection by pinging the database.
@@ -121,12 +121,12 @@ func (s *service) Close() error {
 	return s.db.Close()
 }
 
-func (s *service) CreateTable(query string) {
+func (s *service) CreateTable(query string, name string) {
 	statement, err := s.db.Prepare(query)
 	if err != nil {
-		log.Println("Error in creating table")
+		log.Printf(`Error in creating table %s`, name)
 	} else {
-		log.Println("Successfully created table books!")
+		log.Printf("Successfully created table %s!", name)
 	}
 	statement.Exec()
 }

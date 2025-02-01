@@ -23,6 +23,7 @@ type Service interface {
 	// It returns an error if the connection cannot be closed.
 	Close() error
 	CreateTable(query string, name string)
+	CreateUser(data UserData)
 }
 
 type service struct {

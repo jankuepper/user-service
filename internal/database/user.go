@@ -18,7 +18,7 @@ type User struct {
 }
 
 func (s *service) CreateUser(data UserData) {
-	const query = `INSERT INTO user (email, password, type, salt) VALUES ($email, $password, $type, $salt)`
+	const query = `INSERT INTO user (email, password, salt) VALUES ($email, $password, $salt)`
 	statement, _ := s.db.Prepare(query)
 	_, err := statement.Exec(data.Email, data.Password, data.Salt)
 	if err != nil {

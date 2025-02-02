@@ -1,6 +1,7 @@
 package server
 
 import (
+	"auth-service/internal/middleware"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.HelloWorldHandler)
-	mux.HandleFunc("/health", s.healthHandler)
+	mux.Handle("/health", middleware.Auth(http.HandlerFunc(s.healthHandler)))
 	mux.HandleFunc("/signup", s.SignUpHandler)
 	return mux
 }

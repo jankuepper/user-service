@@ -2,6 +2,7 @@ package server
 
 import (
 	"auth-service/internal/database"
+	"auth-service/internal/services"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -20,7 +21,7 @@ func (s *Server) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	} else {
 		s.db.CreateUser(userData)
-		token, _ := CreateToken(userData.Email)
+		token, _ := services.CreateToken(userData.Email)
 		resp["success"] = true
 		resp["errors"] = []string{}
 		resp["token"] = token

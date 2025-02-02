@@ -1,4 +1,4 @@
-package server
+package services
 
 import (
 	"log"
@@ -28,15 +28,12 @@ func VerifyToken(tokenString string) error {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
-
 	if err != nil {
 		return err
 	}
-
 	if !token.Valid {
 		log.Printf("invalid token")
 		return nil
 	}
-
 	return nil
 }

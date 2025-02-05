@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *Server) SignUpHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +20,13 @@ func (s *Server) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(res)
 		return
 	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userData.Password), bcrypt.DefaultCost)
+	if err != nil {
+		res := returnError(err, resp)
+		w.Write(res)
+		return
+	}
+	userData.Password = string(hashedPassword)
 	_, err = s.db.CreateUser(userData)
 	if err != nil {
 		res := returnError(err, resp)

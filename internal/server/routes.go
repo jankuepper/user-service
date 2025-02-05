@@ -24,6 +24,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Auth(fs)))
 
 	mux.HandleFunc("/signup", s.SignUpHandler)
+	mux.HandleFunc("/login", s.LoginHandler)
 	return mux
 }
 

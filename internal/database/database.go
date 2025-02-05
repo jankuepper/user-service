@@ -24,6 +24,7 @@ type Service interface {
 	Close() error
 	CreateTable(query string, name string)
 	CreateUser(data UserData) (sql.Result, error)
+	GetUserByEmail(email string) (User, error)
 }
 
 type service struct {

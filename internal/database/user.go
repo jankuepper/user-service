@@ -9,7 +9,6 @@ type UserId = int
 type UserData struct {
 	Email    string
 	Password string
-	Salt     string
 }
 
 type User struct {
@@ -18,7 +17,18 @@ type User struct {
 }
 
 func (s *service) CreateUser(data UserData) (sql.Result, error) {
-	const query = `INSERT INTO user (email, password, salt) VALUES ($email, $password, $salt)`
+	const query = `INSERT INTO user (email, password) VALUES ($email, $password)`
 	statement, _ := s.db.Prepare(query)
-	return statement.Exec(data.Email, data.Password, data.Salt)
+	return statement.Exec(data.Email, data.Password)
+}
+
+func (s *service) GetUserByEmail(email string) (User, error) {
+	const query = `SELECT id, email, password FROM user WHERE email = $email`
+	rows, err := s.db.Query(query, email)
+	defer rows.Close()
+	var user User
+	for rows.Next() {
+		rows.Scan(&user.Id, &user.Data.Email, &user.Data.Password)
+	}
+	return user, err
 }

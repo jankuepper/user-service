@@ -4,31 +4,34 @@ import (
 	"auth-service/internal/database"
 	"auth-service/internal/services"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (s *Server) SignUpHandler(w http.ResponseWriter, r *http.Request) {
+type loginUserData struct {
+	Email    string
+	Password string
+}
+
+func (s *Server) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	resp := make(map[string]any)
 	decoder := json.NewDecoder(r.Body)
-	var userData database.UserData
+	var userData loginUserData
 	err := decoder.Decode(&userData)
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
 		return
 	}
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userData.Password), bcrypt.DefaultCost)
+	var res database.User
+	res, err = s.db.GetUserByEmail(userData.Email)
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
 		return
 	}
-	userData.Password = string(hashedPassword)
-	println(userData.Password)
-	_, err = s.db.CreateUser(userData)
+	err = bcrypt.CompareHashAndPassword([]byte(res.Data.Password), []byte(userData.Password))
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
@@ -46,16 +49,4 @@ func (s *Server) SignUpHandler(w http.ResponseWriter, r *http.Request) {
 	resp["token"] = token
 	jsonResp, _ := json.Marshal(resp)
 	_, _ = w.Write(jsonResp)
-}
-
-func returnError(err error, resp map[string]any) []byte {
-	log.Print("An error occured during sign-up. ", err)
-	resp["success"] = false
-	resp["errors"] = []string{"Something went wrong."}
-	resp["token"] = nil
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		log.Print("An error occured during sign-up error response. ", err)
-	}
-	return jsonResp
 }

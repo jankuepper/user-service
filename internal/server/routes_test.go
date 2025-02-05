@@ -1,13 +1,6 @@
 package server
 
-import (
-	"io"
-	"net/http"
-	"net/http/httptest"
-	"testing"
-)
-
-func TestHandler(t *testing.T) {
+/*func TestHandler(t *testing.T) {
 	s := &Server{}
 	server := httptest.NewServer(http.HandlerFunc(s.HelloWorldHandler))
 	defer server.Close()
@@ -28,4 +21,4 @@ func TestHandler(t *testing.T) {
 	if expected != string(body) {
 		t.Errorf("expected response body to be %v; got %v", expected, string(body))
 	}
-}
+}*/

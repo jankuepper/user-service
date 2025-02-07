@@ -13,7 +13,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.LoginHandler)
 	mux.HandleFunc("/signup", s.SignUpHandler)
-	mux.Handle("/health", middleware.Auth(http.HandlerFunc(s.healthHandler)))
+	mux.Handle("/health", http.HandlerFunc(s.healthHandler))
 	fs := getFileServer()
 	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Auth(fs)))
 	return mux

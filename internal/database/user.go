@@ -23,10 +23,13 @@ func (s *service) CreateUser(data UserData) (sql.Result, error) {
 }
 
 func (s *service) GetUserByEmail(email string) (User, error) {
+	var user User
 	const query = `SELECT id, email, password FROM user WHERE email = $email`
 	rows, err := s.db.Query(query, email)
+	if err != nil {
+		return user, err
+	}
 	defer rows.Close()
-	var user User
 	for rows.Next() {
 		rows.Scan(&user.Id, &user.Data.Email, &user.Data.Password)
 	}

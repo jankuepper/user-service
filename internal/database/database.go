@@ -25,6 +25,7 @@ type Service interface {
 	CreateTable(query string, name string)
 	CreateUser(data UserData) (sql.Result, error)
 	GetUserByEmail(email string) (User, error)
+	GetAllSeries() (Serie, error)
 }
 
 type service struct {
@@ -57,10 +58,12 @@ func New() Service {
 }
 
 func (s *service) init() {
-	const createUserTable = "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL, salt TEXT NO NULL)"
+	const createUserTable = "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL)"
 	s.CreateTable(createUserTable, "user")
 	const createJwtTable = "CREATE TABLE IF NOT EXISTS jwt (id INTEGER PRIMARY KEY AUTOINCREMENT, jwt TEXT NOT NULL UNIQUE, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES user(id))"
 	s.CreateTable(createJwtTable, "jwt")
+	const createSerieTable = "CREATE TABLE IF NOT EXISTS serie (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT)"
+	s.CreateTable(createSerieTable, "serie")
 }
 
 // Health checks the health of the database connection by pinging the database.

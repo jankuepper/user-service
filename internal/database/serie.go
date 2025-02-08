@@ -23,17 +23,22 @@ func (s *service) CreateSerie(data SerieData) (sql.Result, error) {
 	return statement.Exec(data.Name, data.ThumbnailPath)
 }
 
-func (s *service) GetAllSeries() (Serie, error) {
-	var serie Serie
+func (s *service) GetAllSeries() ([]Serie, error) {
 	query := `SELECT * FROM serie`
 	rows, err := s.db.Query(query)
 	if err != nil {
-		return serie, err
+		var serie Serie
+		return []Serie{serie}, err
 	}
 	defer rows.Close()
+	series := []Serie{}
 	for rows.Next() {
-		rows.Scan(&serie.Id, &serie.Data.Name, &serie.Data.ThumbnailPath)
+		var serie Serie
+		if err = rows.Scan(&serie.Id, &serie.Data.Name, &serie.Data.ThumbnailPath); err != nil {
+			return series, err
+		}
+		series = append(series, serie)
 	}
-	fmt.Println("Serie ", serie)
-	return serie, err
+	fmt.Println("Serie ", series)
+	return series, err
 }

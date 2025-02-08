@@ -7,7 +7,7 @@ import (
 
 func (s *Server) SerieHandler(w http.ResponseWriter, r *http.Request) {
 	resp := make(map[string]any)
-	serie, err := s.db.GetAllSeries()
+	series, err := s.db.GetAllSeries()
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
@@ -15,7 +15,7 @@ func (s *Server) SerieHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	resp["success"] = true
 	resp["errors"] = []string{}
-	resp["series"] = serie
+	resp["series"] = series
 	jsonResp, _ := json.Marshal(resp)
 	_, _ = w.Write(jsonResp)
 }

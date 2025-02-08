@@ -1,11 +1,15 @@
 package middleware
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 func Cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// look at the requerst origin from r and then make a decision which origin to  set in the cors header
 		// https://stackoverflow.com/questions/47298310/golang-http-allow-certain-domain-name-both-with-www-and-without
+		fmt.Println("origin", r.Header.Get("Origin"))
 		switch origin := r.Header.Get("Origin"); origin {
 		case "www.jankuepper.de", "jankuepper.de":
 			w.Header().Add("Access-Control-Allow-Origin", origin)

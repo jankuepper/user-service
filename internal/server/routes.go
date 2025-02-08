@@ -11,9 +11,13 @@ import (
 
 func (s *Server) RegisterRoutes() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", s.LoginHandler)
-	mux.HandleFunc("/signup", s.SignUpHandler)
-	mux.Handle("/health", http.HandlerFunc(s.healthHandler))
+
+	// public
+	mux.Handle("/", middleware.Cors(http.HandlerFunc(s.LoginHandler)))
+	mux.Handle("/signup", middleware.Cors(http.HandlerFunc(s.SignUpHandler)))
+	mux.Handle("/health", middleware.Cors(http.HandlerFunc(s.healthHandler)))
+
+	// private
 	fs := getFileServer()
 	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Auth(fs)))
 	return mux

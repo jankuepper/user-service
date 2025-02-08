@@ -12,6 +12,7 @@ func Auth(next http.Handler) http.Handler {
 		token := strings.ReplaceAll(authHeader, "Bearer ", "")
 		err := services.VerifyToken(token)
 		if err != nil {
+			http.Error(w, "Please sign in", http.StatusUnauthorized)
 			return
 		}
 		next.ServeHTTP(w, r)

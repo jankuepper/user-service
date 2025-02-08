@@ -24,18 +24,16 @@ func (s *service) CreateSerie(data SerieData) (sql.Result, error) {
 }
 
 func (s *service) GetAllSeries() ([]Serie, error) {
-	query := `SELECT * FROM serie`
-	rows, err := s.db.Query(query)
+	rows, err := s.db.Query(`SELECT * FROM serie`)
 	if err != nil {
-		var serie Serie
-		return []Serie{serie}, err
+		return nil, err
 	}
 	defer rows.Close()
 	series := []Serie{}
 	for rows.Next() {
 		var serie Serie
 		if err = rows.Scan(&serie.Id, &serie.Data.Name, &serie.Data.ThumbnailPath); err != nil {
-			return series, err
+			return nil, err
 		}
 		series = append(series, serie)
 	}

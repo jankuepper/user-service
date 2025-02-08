@@ -15,7 +15,7 @@ func (s *Server) SerieHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	resp["success"] = true
 	resp["errors"] = []string{}
-	resp["token"] = serie
+	resp["series"] = serie
 	jsonResp, _ := json.Marshal(resp)
 	_, _ = w.Write(jsonResp)
 }

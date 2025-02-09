@@ -67,6 +67,8 @@ func (s *service) init() {
 	s.CreateTable(createJwtTable, "jwt")
 	const createSerieTable = "CREATE TABLE IF NOT EXISTS serie (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT)"
 	s.CreateTable(createSerieTable, "serie")
+	const createSeasonTable = "CREATE TABLE IF NOT EXISTS season (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, seasonpath TEXT)"
+	s.CreateTable(createSeasonTable, "serie")
 }
 
 // Health checks the health of the database connection by pinging the database.

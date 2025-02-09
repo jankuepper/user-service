@@ -6,12 +6,12 @@ import (
 	"net/http"
 )
 
-func (s *Server) SerieHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) SeasonHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		getSeries(w, s)
+		getSeason(w, s)
 	case http.MethodPost:
-		postSeries(w, r, s)
+		postSeason(w, r, s)
 	case http.MethodPut:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	case http.MethodDelete:
@@ -21,9 +21,9 @@ func (s *Server) SerieHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getSeries(w http.ResponseWriter, s *Server) {
+func getSeason(w http.ResponseWriter, s *Server) {
 	resp := make(map[string]any)
-	series, err := s.db.GetAllSeries()
+	series, err := s.db.GetAllSeasons()
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
@@ -36,17 +36,17 @@ func getSeries(w http.ResponseWriter, s *Server) {
 	_, _ = w.Write(jsonResp)
 }
 
-func postSeries(w http.ResponseWriter, r *http.Request, s *Server) {
+func postSeason(w http.ResponseWriter, r *http.Request, s *Server) {
 	resp := make(map[string]any)
 	decoder := json.NewDecoder(r.Body)
-	var data database.SerieData
+	var data database.SeasonData
 	err := decoder.Decode(&data)
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
 		return
 	}
-	_, err = s.db.CreateSerie(data)
+	_, err = s.db.CreateSeason(data)
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)

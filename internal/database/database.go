@@ -25,7 +25,10 @@ type Service interface {
 	CreateTable(query string, name string)
 	CreateUser(data UserData) (sql.Result, error)
 	GetUserByEmail(email string) (User, error)
+	CreateSerie(data SerieData) (sql.Result, error)
 	GetAllSeries() ([]Serie, error)
+	CreateSeason(data SeasonData) (sql.Result, error)
+	GetAllSeasons() ([]Season, error)
 }
 
 type service struct {

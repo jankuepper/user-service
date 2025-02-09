@@ -2,18 +2,16 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 )
 
-// Serie hat Seasons, Seasons haben Episoden
-
+type SerieId = int
 type SerieData struct {
 	Name          string
 	ThumbnailPath string
 }
 
 type Serie struct {
-	Id   UserId
+	Id   SerieId
 	Data SerieData
 }
 
@@ -24,7 +22,7 @@ func (s *service) CreateSerie(data SerieData) (sql.Result, error) {
 }
 
 func (s *service) GetAllSeries() ([]Serie, error) {
-	rows, err := s.db.Query(`SELECT * FROM serie`)
+	rows, err := s.db.Query("SELECT * FROM serie")
 	if err != nil {
 		return nil, err
 	}
@@ -37,6 +35,5 @@ func (s *service) GetAllSeries() ([]Serie, error) {
 		}
 		series = append(series, serie)
 	}
-	fmt.Println("Serie ", series)
 	return series, err
 }

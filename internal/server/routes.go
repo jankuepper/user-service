@@ -21,6 +21,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	fs := getFileServer()
 	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Auth(fs)))
 	mux.Handle("/series", middleware.Cors(middleware.Auth(http.HandlerFunc(s.SerieHandler))))
+	mux.Handle("/seasons", middleware.Cors(middleware.Auth(http.HandlerFunc(s.SeasonHandler))))
 	return mux
 }
 

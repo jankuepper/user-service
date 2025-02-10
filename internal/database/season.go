@@ -18,7 +18,7 @@ type Season struct {
 }
 
 func (s *service) CreateSeason(data SeasonData) (sql.Result, error) {
-	fmt.Println(data)
+	fmt.Println("Test", data)
 	const query = `INSERT INTO season (name, thumbnailpath, serieid) VALUES ($name, $thumbnailpath, $serieid)`
 	statement, _ := s.db.Prepare(query)
 	return statement.Exec(data.Name, data.ThumbnailPath, data.SerieId)

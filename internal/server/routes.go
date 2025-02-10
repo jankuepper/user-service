@@ -19,7 +19,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 
 	// private
 	fs := getFileServer()
-	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Auth(fs)))
+	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Cors(middleware.Auth(fs))))
 	mux.Handle("/series", middleware.Cors(middleware.Auth(http.HandlerFunc(s.SerieHandler))))
 	mux.Handle("/seasons", middleware.Cors(middleware.Auth(http.HandlerFunc(s.SeasonHandler))))
 	mux.Handle("/episodes", middleware.Cors(middleware.Auth(http.HandlerFunc(s.EpisodeHandler))))

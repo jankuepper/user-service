@@ -1,19 +1,14 @@
 package database
 
-import "log"
+import "database/sql"
 
 type Jwt struct {
 	UserId UserId
 	Token  string
 }
 
-func (s *service) createJwt(data Jwt) {
-	const query = "" // TODO `INSERT INTO jwt (email, password, type, salt) VALUES ($email, $password, $type, $salt)`
+func (s *service) CreateJwt(data Jwt) (sql.Result, error) {
+	const query = "INSERT INTO jwt (jwt, user_id) VALUES($jwt, $user_id)"
 	statement, _ := s.db.Prepare(query)
-	_, err := statement.Exec(data.Token)
-	if err != nil {
-		log.Printf("Error in creating jwt %s for user with id:%d\n", data.Token, data.UserId)
-		return
-	}
-	log.Println("Successfully updated the book in database!")
+	return statement.Exec(data.Token, data.UserId)
 }

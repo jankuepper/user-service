@@ -4,9 +4,10 @@ import "database/sql"
 
 type EpisodeId = int
 type EpisodeData struct {
-	Name        string
-	EpisodePath string
-	SeasonId    SeasonId
+	Name          string
+	EpisodePath   string
+	SeasonId      SeasonId
+	ThumbnailPath string
 }
 
 type Episode struct {
@@ -15,9 +16,9 @@ type Episode struct {
 }
 
 func (s *service) CreateEpisode(data EpisodeData) (sql.Result, error) {
-	const query = `INSERT INTO episode (name, episodepath, seasonid) VALUES ($name, $episodepath, $seasonid)`
+	const query = `INSERT INTO episode (name, episodepath, seasonid, thumbnailpath) VALUES ($name, $episodepath, $seasonid, $thumbnailpath)`
 	statement, _ := s.db.Prepare(query)
-	return statement.Exec(data.Name, data.EpisodePath, data.SeasonId)
+	return statement.Exec(data.Name, data.EpisodePath, data.SeasonId, data.ThumbnailPath)
 }
 
 func (s *service) GetAllEpisodes() ([]Episode, error) {
@@ -29,7 +30,7 @@ func (s *service) GetAllEpisodes() ([]Episode, error) {
 	episodes := []Episode{}
 	for rows.Next() {
 		var episode Episode
-		if err = rows.Scan(&episode.Id, &episode.Data.Name, &episode.Data.EpisodePath, &episode.Data.SeasonId); err != nil {
+		if err = rows.Scan(&episode.Id, &episode.Data.Name, &episode.Data.EpisodePath, &episode.Data.SeasonId, &episode.Data.ThumbnailPath); err != nil {
 			return nil, err
 		}
 		episodes = append(episodes, episode)

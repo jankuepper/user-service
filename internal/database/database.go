@@ -75,8 +75,9 @@ func (s *service) init() {
 	s.CreateTable(createEpisodeTable, "episode")
 
 	// season 1 for testing
-	s.CreateSerie(SerieData{Name: "That 70s show", ThumbnailPath: "Bla"})
-	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: "Bla", SerieId: 1})
+	res, _ := s.CreateSerie(SerieData{Name: "That 70s show", ThumbnailPath: "Bla"})
+	serieId, _ := res.LastInsertId()
+	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: "Bla", SerieId: int(serieId)})
 	s.CreateEpisode(EpisodeData{Name: "Pilot", EpisodePath: "Season_1_Disk_1/1_Pilot.mp4", SeasonId: 1})
 }
 

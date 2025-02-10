@@ -30,7 +30,7 @@ func (s *service) GetAllEpisodes() ([]Episode, error) {
 	episodes := []Episode{}
 	for rows.Next() {
 		var episode Episode
-		if err = rows.Scan(&episode.Id, &episode.Data.Name, &episode.Data.EpisodePath, &episode.Data.SeasonId, &episode.Data.ThumbnailPath); err != nil {
+		if err = rows.Scan(&episode.Id, &episode.Data.Name, &episode.Data.EpisodePath, &episode.Data.ThumbnailPath, &episode.Data.SeasonId); err != nil {
 			return nil, err
 		}
 		episodes = append(episodes, episode)

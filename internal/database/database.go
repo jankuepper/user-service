@@ -73,6 +73,10 @@ func (s *service) init() {
 	s.CreateTable(createSeasonTable, "season")
 	const createEpisodeTable = "CREATE TABLE IF NOT EXISTS episode (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, episodepath TEXT, thumbnailpath TEXT, season_id INTEGER, FOREIGN KEY (season_id) REFERENCES season(id))"
 	s.CreateTable(createEpisodeTable, "episode")
+
+	// season 1 for testing
+	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: ""})
+	s.CreateEpisode(EpisodeData{Name: "Pilot", EpisodePath: "Season_1_Disk_1/1_Pilot.mp4", SeasonId: 1})
 }
 
 // Health checks the health of the database connection by pinging the database.

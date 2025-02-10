@@ -10,6 +10,9 @@ func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
 		token := strings.ReplaceAll(authHeader, "Bearer ", "")
+		if token == "" {
+			token = r.URL.Query().Get("jwt")
+		}
 		err := services.VerifyToken(token)
 		if err != nil {
 			http.Error(w, "Please sign in", http.StatusUnauthorized)

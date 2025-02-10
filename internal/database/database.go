@@ -69,9 +69,9 @@ func (s *service) init() {
 	s.CreateTable(createJwtTable, "jwt")
 	const createSerieTable = "CREATE TABLE IF NOT EXISTS serie (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT)"
 	s.CreateTable(createSerieTable, "serie")
-	const createSeasonTable = "CREATE TABLE IF NOT EXISTS season (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, seasonpath TEXT)"
+	const createSeasonTable = "CREATE TABLE IF NOT EXISTS season (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT, serie_id INTEGER, FOREIGN KEY (serie_id) REFERENCES serie(id))"
 	s.CreateTable(createSeasonTable, "season")
-	const createEpisodeTable = "CREATE TABLE IF NOT EXISTS episode (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, episodepath TEXT)"
+	const createEpisodeTable = "CREATE TABLE IF NOT EXISTS episode (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, episodepath TEXT, season_id INTEGER, FOREIGN KEY (season_id) REFERENCES season(id))"
 	s.CreateTable(createEpisodeTable, "episode")
 }
 

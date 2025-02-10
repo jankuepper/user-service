@@ -17,7 +17,7 @@ type Episode struct {
 func (s *service) CreateEpisode(data EpisodeData) (sql.Result, error) {
 	const query = `INSERT INTO episode (name, episodepath, seasonid) VALUES ($name, $episodepath, $seasonid)`
 	statement, _ := s.db.Prepare(query)
-	return statement.Exec(data.Name, data.EpisodePath)
+	return statement.Exec(data.Name, data.EpisodePath, data.SeasonId)
 }
 
 func (s *service) GetAllEpisodes() ([]Episode, error) {

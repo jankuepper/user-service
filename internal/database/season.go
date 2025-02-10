@@ -17,7 +17,7 @@ type Season struct {
 func (s *service) CreateSeason(data SeasonData) (sql.Result, error) {
 	const query = `INSERT INTO season (name, thumbnailpath, serieid) VALUES ($name, $thumbnailpath, $serieid)`
 	statement, _ := s.db.Prepare(query)
-	return statement.Exec(data.Name, data.ThumbnailPath)
+	return statement.Exec(data.Name, data.ThumbnailPath, data.SerieId)
 }
 
 func (s *service) GetAllSeasons() ([]Season, error) {

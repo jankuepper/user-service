@@ -23,7 +23,7 @@ func (s *Server) SeasonHandler(w http.ResponseWriter, r *http.Request) {
 
 func getSeason(w http.ResponseWriter, s *Server) {
 	resp := make(map[string]any)
-	series, err := s.db.GetAllSeasons()
+	seasons, err := s.db.GetAllSeasons()
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
@@ -31,7 +31,7 @@ func getSeason(w http.ResponseWriter, s *Server) {
 	}
 	resp["success"] = true
 	resp["errors"] = []string{}
-	resp["series"] = series
+	resp["seasons"] = seasons
 	jsonResp, _ := json.Marshal(resp)
 	_, _ = w.Write(jsonResp)
 }

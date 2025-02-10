@@ -23,7 +23,7 @@ func (s *Server) EpisodeHandler(w http.ResponseWriter, r *http.Request) {
 
 func getEpisode(w http.ResponseWriter, s *Server) {
 	resp := make(map[string]any)
-	series, err := s.db.GetAllEpisodes()
+	episodes, err := s.db.GetAllEpisodes()
 	if err != nil {
 		res := returnError(err, resp)
 		w.Write(res)
@@ -31,7 +31,7 @@ func getEpisode(w http.ResponseWriter, s *Server) {
 	}
 	resp["success"] = true
 	resp["errors"] = []string{}
-	resp["series"] = series
+	resp["episodes"] = episodes
 	jsonResp, _ := json.Marshal(resp)
 	_, _ = w.Write(jsonResp)
 }

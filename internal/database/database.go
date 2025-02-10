@@ -29,6 +29,8 @@ type Service interface {
 	GetAllSeries() ([]Serie, error)
 	CreateSeason(data SeasonData) (sql.Result, error)
 	GetAllSeasons() ([]Season, error)
+	CreateEpisode(data EpisodeData) (sql.Result, error)
+	GetAllEpisodes() ([]Episode, error)
 }
 
 type service struct {
@@ -68,7 +70,9 @@ func (s *service) init() {
 	const createSerieTable = "CREATE TABLE IF NOT EXISTS serie (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT)"
 	s.CreateTable(createSerieTable, "serie")
 	const createSeasonTable = "CREATE TABLE IF NOT EXISTS season (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, seasonpath TEXT)"
-	s.CreateTable(createSeasonTable, "serie")
+	s.CreateTable(createSeasonTable, "season")
+	const createEpisodeTable = "CREATE TABLE IF NOT EXISTS episode (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, episodepath TEXT)"
+	s.CreateTable(createEpisodeTable, "episode")
 }
 
 // Health checks the health of the database connection by pinging the database.

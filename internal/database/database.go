@@ -65,19 +65,18 @@ func New() Service {
 func (s *service) init() {
 	const createUserTable = "CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT NOT NULL UNIQUE, password TEXT NOT NULL)"
 	s.CreateTable(createUserTable, "user")
-	const createJwtTable = "CREATE TABLE IF NOT EXISTS jwt (id INTEGER PRIMARY KEY AUTOINCREMENT, jwt TEXT NOT NULL UNIQUE, user_id INTEGER, FOREIGN KEY (user_id) REFERENCES user(id))"
+	const createJwtTable = "CREATE TABLE IF NOT EXISTS jwt (id INTEGER PRIMARY KEY AUTOINCREMENT, jwt TEXT NOT NULL UNIQUE, userid INTEGER, FOREIGN KEY (userid) REFERENCES user(id))"
 	s.CreateTable(createJwtTable, "jwt")
 	const createSerieTable = "CREATE TABLE IF NOT EXISTS serie (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT)"
 	s.CreateTable(createSerieTable, "serie")
-	const createSeasonTable = "CREATE TABLE IF NOT EXISTS season (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT, serie_id INTEGER, FOREIGN KEY (serie_id) REFERENCES serie(id))"
+	const createSeasonTable = "CREATE TABLE IF NOT EXISTS season (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, thumbnailpath TEXT, serieid INTEGER, FOREIGN KEY (serieid) REFERENCES serie(id))"
 	s.CreateTable(createSeasonTable, "season")
-	const createEpisodeTable = "CREATE TABLE IF NOT EXISTS episode (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, episodepath TEXT, thumbnailpath TEXT, season_id INTEGER, FOREIGN KEY (season_id) REFERENCES season(id))"
+	const createEpisodeTable = "CREATE TABLE IF NOT EXISTS episode (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, episodepath TEXT, thumbnailpath TEXT, seasonid INTEGER, FOREIGN KEY (seasonid) REFERENCES season(id))"
 	s.CreateTable(createEpisodeTable, "episode")
 
 	// season 1 for testing
-	res, _ := s.CreateSerie(SerieData{Name: "That 70s show", ThumbnailPath: "Bla"})
-	serieId, _ := res.LastInsertId()
-	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: "Bla", SerieId: int(serieId)})
+	s.CreateSerie(SerieData{Name: "That 70s show", ThumbnailPath: "Bla"})
+	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: "Bla", SerieId: 1})
 	s.CreateEpisode(EpisodeData{Name: "Pilot", EpisodePath: "Season_1_Disk_1/1_Pilot.mp4", SeasonId: 1})
 }
 

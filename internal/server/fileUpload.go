@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -26,17 +27,20 @@ func fileUpload(r *http.Request) {
 	r.ParseMultipartForm(1000)
 	file, _, err := r.FormFile("test.mp4")
 	if err != nil {
+		fmt.Println("Error", err)
 		return
 	}
 	defer file.Close()
 
 	tempFile, err := ioutil.TempFile(dir, "upload-*.mp4")
 	if err != nil {
+		fmt.Println("Error", err)
 		return
 	}
 	defer tempFile.Close()
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
+		fmt.Println("Error", err)
 		return
 	}
 	tempFile.Write(fileBytes)

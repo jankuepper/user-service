@@ -13,7 +13,7 @@ func Auth(next http.Handler) http.Handler {
 		if token == "" {
 			token = r.URL.Query().Get("jwt")
 		}
-		err := services.VerifyToken(token)
+		token, err := services.VerifyToken(token)
 		if err != nil {
 			http.Error(w, "Please sign in", http.StatusUnauthorized)
 			return

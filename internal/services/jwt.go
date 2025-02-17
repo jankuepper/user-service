@@ -25,16 +25,16 @@ func CreateToken(email string) (string, error) {
 	return tokenString, nil
 }
 
-func VerifyToken(tokenString string) (jwt.Token, error) {
+func VerifyToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
 	if err != nil {
-		return *token, err
+		return token, err
 	}
 	if !token.Valid {
 		log.Printf("invalid token")
-		return *token, errors.New("invalid token")
+		return token, errors.New("invalid token")
 	}
-	return *token, nil
+	return token, nil
 }

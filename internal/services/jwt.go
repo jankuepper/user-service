@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -24,16 +25,16 @@ func CreateToken(email string) (string, error) {
 	return tokenString, nil
 }
 
-func VerifyToken(tokenString string) error {
+func VerifyToken(tokenString string) (jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
 	if err != nil {
-		return err
+		return *token, err
 	}
 	if !token.Valid {
 		log.Printf("invalid token")
-		return nil
+		return *token, errors.New("invalid token")
 	}
-	return nil
+	return *token, nil
 }

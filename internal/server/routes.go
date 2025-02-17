@@ -17,10 +17,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	mux.Handle("/signup", middleware.Cors(http.HandlerFunc(s.SignUpHandler)))
 	mux.Handle("/health", middleware.Cors(http.HandlerFunc(s.healthHandler)))
 
-	mux.Handle("/test", middleware.Cors(http.HandlerFunc(s.FileUploadHandler)))
-
 	// private
 	fs := getFileServer()
+	// mux.Handle("/upload", middleware.Cors(middleware.Auth(http.HandlerFunc(s.FileUploadHandler)))) todo: fix
 	mux.Handle("/data/", http.StripPrefix("/data/", middleware.Cors(middleware.Auth(fs))))
 	mux.Handle("/series", middleware.Cors(middleware.Auth(http.HandlerFunc(s.SerieHandler))))
 	mux.Handle("/seasons", middleware.Cors(middleware.Auth(http.HandlerFunc(s.SeasonHandler))))

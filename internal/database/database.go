@@ -75,9 +75,12 @@ func (s *service) init() {
 	s.CreateTable(createEpisodeTable, "episode")
 
 	// season 1 for testing
-	s.CreateSerie(SerieData{Name: "That 70s show", ThumbnailPath: "Bla"})
-	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: "Bla", SerieId: 1})
-	s.CreateEpisode(EpisodeData{Name: "Pilot", EpisodePath: "Season_1_Disk_1/1_Pilot.mp4", SeasonId: 1, ThumbnailPath: "Bla"})
+	s.CreateSerie(SerieData{Name: "That 70s show", ThumbnailPath: "https://m.media-amazon.com/images/M/MV5BMzFmZWQ2MDYtZjJlNC00ZDg1LTkwOGItZTAxODA2ZTMzNjQxXkEyXkFqcGc@._V1_.jpg"})
+	s.CreateSeason(SeasonData{Name: "Season One", ThumbnailPath: "https://m.media-amazon.com/images/M/MV5BMzFmZWQ2MDYtZjJlNC00ZDg1LTkwOGItZTAxODA2ZTMzNjQxXkEyXkFqcGc@._V1_.jpg", SerieId: 1})
+	s.CreateEpisode(EpisodeData{Name: "Pilot", EpisodePath: "Season_1_Disk_1/1_Pilot.mp4", SeasonId: 1, ThumbnailPath: "https://m.media-amazon.com/images/M/MV5BMTcyODE2NzM0Nl5BMl5BanBnXkFtZTgwODQwNTU2MjE@._V1_.jpg"})
+	s.CreateEpisode(EpisodeData{Name: "Eric's Birthday", EpisodePath: "Season_1_Disk_1/2_Erics_Birthday.mp4", SeasonId: 1, ThumbnailPath: "https://m.media-amazon.com/images/M/MV5BNzg2MzUwMTg0NF5BMl5BanBnXkFtZTgwMTM4MjY2MjE@._V1_.jpg"})
+	s.CreateEpisode(EpisodeData{Name: "Streaking", EpisodePath: "Season_1_Disk_1/3_Streaking.mp4", SeasonId: 1, ThumbnailPath: "https://m.media-amazon.com/images/M/MV5BZDQzOGM2NTItZjMyMS00OTg2LTk1N2QtMzY2YmYzZjE0NjdhXkEyXkFqcGc@._V1_.jpg"})
+	s.CreateEpisode(EpisodeData{Name: "Battle of the sexiest", EpisodePath: "Season_1_Disk_1/4_Battle_of_the_sexiest.mp4", SeasonId: 1, ThumbnailPath: "https://m.media-amazon.com/images/M/MV5BMjMxNTcwMzExOF5BMl5BanBnXkFtZTgwMjE5ODU2MjE@._V1_.jpg"})
 }
 
 // Health checks the health of the database connection by pinging the database.
